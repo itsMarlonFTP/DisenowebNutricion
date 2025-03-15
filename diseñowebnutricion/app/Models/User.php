@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class User
@@ -33,13 +34,13 @@ class User extends Model
 {
     
     protected $perPage = 20;
-
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = ['userID', 'name', 'email', 'allergies', 'goals', 'password_hash', 'age', 'gender', 'weight', 'height', 'activity_level', 'restrictions'];
+    protected $fillable = ['userID', 'name', 'email', 'email_verified_at','allergies', 'goals', 'password_hash', 'age', 'gender', 'weight', 'height', 'activity_level', 'restrictions'];
 
 
     /**
@@ -73,5 +74,8 @@ class User extends Model
     {
         return $this->hasMany(\App\Models\Dise単owebnutricion.fitnessIntegration::class, 'userID', 'userID');
     }
+    protected $casts = [
+        'email_verified_at' => 'datetime', 
+    ];
     
 }
