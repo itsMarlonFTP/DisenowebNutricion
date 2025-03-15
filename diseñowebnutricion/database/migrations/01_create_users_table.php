@@ -23,7 +23,6 @@ return new class extends Migration
             $table->float('weight');
             $table->float('height');
             $table->string('activity_level');
-            $table->timestamp('created_at')->useCurrent();
             $table->json('restrictions');
             $table->timestamps();
         });

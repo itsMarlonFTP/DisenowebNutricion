@@ -2,47 +2,76 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+/**
+ * Class User
+ *
+ * @property $userID
+ * @property $name
+ * @property $email
+ * @property $allergies
+ * @property $goals
+ * @property $password_hash
+ * @property $age
+ * @property $gender
+ * @property $weight
+ * @property $height
+ * @property $activity_level
+ * @property $restrictions
+ * @property $created_at
+ * @property $updated_at
+ *
+ * @property Activity7.admin[] $activity7.admins
+ * @property Activity7.student[] $activity7.students
+ * @property Activity7.teacher[] $activity7.teachers
+ * @property Dise単owebnutricion.fitnessIntegration[] $dise単owebnutricion.fitnessIntegrations
+ * @package App
+ * @mixin \Illuminate\Database\Eloquent\Builder
+ */
+class User extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    
+    protected $perPage = 20;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $fillable = ['userID', 'name', 'email', 'allergies', 'goals', 'password_hash', 'age', 'gender', 'weight', 'height', 'activity_level', 'restrictions'];
+
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function activity7_admins()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(\App\Models\Activity7.admin::class, 'id', 'user_id');
     }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activity7_students()
+    {
+        return $this->hasMany(\App\Models\Activity7.student::class, 'id', 'user_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activity7_teachers()
+    {
+        return $this->hasMany(\App\Models\Activity7.teacher::class, 'id', 'user_id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function dise単owebnutricion_fitnessIntegrations()
+    {
+        return $this->hasMany(\App\Models\Dise単owebnutricion.fitnessIntegration::class, 'userID', 'userID');
+    }
+    
 }
