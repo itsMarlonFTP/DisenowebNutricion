@@ -15,17 +15,18 @@ return new class extends Migration
             $table->id('userID');
             $table->string('name');
             $table->string('email')->unique();
-            $table->json('allergies');
-            $table->json('goals');
-            $table->string('password_hash');
-            $table->integer('age');
-            $table->string('gender');
-            $table->float('weight');
-            $table->float('height');
-            $table->string('activity_level');
-            $table->timestamp('created_at')->useCurrent();
-            $table->json('restrictions');
+            $table->timestamp('email_verified_at')->nullable(); 
+            $table->json('allergies')->nullable();
+            $table->json('goals')->nullable();;
+            $table->string('password')->nullable();;
+            $table->integer('age')->nullable();;
+            $table->string('gender')->nullable();;
+            $table->float('weight')->nullable();;
+            $table->float('height')->nullable();;
+            $table->string('activity_level')->nullable();;
+            $table->json('restrictions')->nullable();;
             $table->timestamps();
+            $table->rememberToken();
         });
     }
 
