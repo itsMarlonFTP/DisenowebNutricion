@@ -10,10 +10,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tipos_dieta', function (Blueprint $table) {
+        Schema::create('recipes', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 100);
+            $table->string('recipename');
             $table->text('descripcion');
+            $table->text('ingredients');
+            $table->text('instructions');
+            $table->integer('calories');
+            $table->float('protein');
+            $table->float('carbs');
+            $table->float('fats');
+            $table->string('category');
             $table->timestamps();
         });
     }
@@ -21,8 +28,6 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('tipos_dieta');
+        Schema::dropIfExists('recipes');
     }
 };

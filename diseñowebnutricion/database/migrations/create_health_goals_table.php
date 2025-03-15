@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +10,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('productos_planes_dieta', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('plan_dieta_id')->constrained('planes_dieta');
-            $table->foreignId('producto_id')->constrained('productos');
-            $table->integer('cantidad');
+        Schema::create('health_goals', function (Blueprint $table) {
+            $table->id('goalID');
+            $table->text('description');
+            $table->string('targetdate');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('productos_planes_dieta');
+        Schema::dropIfExists('health_goals');
     }
 };
