@@ -10,12 +10,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nutriologos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre', 100);
-            $table->string('email', 100)->unique();
-            $table->string('telefono', 15);
-            $table->string('especialidad', 100);
+        Schema::create('restaurants', function (Blueprint $table) {
+            $table->id('restaurantId');
+            $table->string('name');
+            $table->string('location');
+            $table->float('rating');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nutriologos');
+        Schema::dropIfExists('restaurants');
     }
 };
