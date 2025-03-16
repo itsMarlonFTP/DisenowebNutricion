@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AllergyController;
+use App\Http\Controllers\UserController;
 
-Route::get('/', [AllergyController::class, 'index']);
-Route::resource('allergies', AllergyController::class);
+Route::resource('users', UserController::class);
