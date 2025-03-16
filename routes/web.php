@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AllergyController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [AllergyController::class, 'index']);
+Route::resource('allergies', AllergyController::class);
