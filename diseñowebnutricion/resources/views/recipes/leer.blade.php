@@ -29,11 +29,16 @@
                 <td>{{ $recipe->carbs }}g</td>
                 <td>{{ $recipe->fats }}g</td>
                 <td>{{ $recipe->category }}</td>
-                <td><button type="button" class="btn btn-primary">Update</button></td>
+                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal{{ $recipe->id }}">Update</button>
+                @include('recipes.actualizar')
+            </td>
             </tr>
             @endforeach
-    </tr>
   </tbody>
 </table>
-
+@if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
 @endsection
