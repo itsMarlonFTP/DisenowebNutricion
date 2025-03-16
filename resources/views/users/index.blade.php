@@ -1,29 +1,31 @@
 @extends('layouts.app')
 
+@section('title', 'Lista de Alergias')
+
 @section('content')
-<h1>Lista de Usuarios</h1>
-<a href="{{ route('users.create') }}">Crear nuevo usuario</a>
-<table>
+<h1>Lista de Alergias</h1>
+<a href="{{ route('allergies.create') }}" class="btn btn-primary">Registrar nueva alergia</a>
+<table class="table table-striped mt-3">
     <thead>
         <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Email</th>
+            <th>Alergia</th>
+            <th>Severidad</th>
             <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($users as $user)
+        @foreach($allergies as $allergy)
         <tr>
-            <td>{{ $user->userID }}</td>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
+            <td>{{ $allergy->allergyID }}</td>
+            <td>{{ $allergy->allergy }}</td>
+            <td>{{ $allergy->severity }}</td>
             <td>
-                <a href="{{ route('users.edit', $user) }}">Editar</a>
-                <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;">
+                <a href="{{ route('allergies.edit', $allergy) }}" class="btn btn-warning btn-sm">Editar</a>
+                <form action="{{ route('allergies.destroy', $allergy) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit">Eliminar</button>
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                 </form>
             </td>
         </tr>
