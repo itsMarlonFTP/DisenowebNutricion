@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Allergy; // Importar el modelo
 use Illuminate\Http\Request;
 
 class AllergyController extends Controller
@@ -81,5 +81,5 @@ class AllergyController extends Controller
     $allergy->delete();
     return redirect()->route('allergies.index')->with('success', 'Alergia eliminada exitosamente');
     }
-    
+
 }
