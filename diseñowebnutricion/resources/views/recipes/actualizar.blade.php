@@ -1,67 +1,104 @@
 <!-- Modal -->
-<div class="modal fade" id="modal{{ $recipe->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="modal{{ $recipe->id }}" tabindex="-1" aria-labelledby="recipeModalLabel{{ $recipe->id }}" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Receta</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="recipeModalLabel{{ $recipe->id }}">
+          <i class="fas fa-edit me-2"></i>Edit Recipe: {{ $recipe->recipename }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form method="POST" action="{{ route('recipes.update', $recipe) }}">
+      
+      <div class="modal-body p-4">
+        <form method="POST" action="{{ route('recipes.update', $recipe) }}" id="updateForm{{ $recipe->id }}">
           @csrf 
           @method('PUT')
 
-          <div class="form-group">
-            <label for="recipename">Recipe Name:</label>
-            <input type="text" id="recipename" name="recipename" value="{{ $recipe->recipename }}" class="form-control" required>
+          <!-- Basic Info Section -->
+          <div class="mb-4">
+            <h6 class="border-bottom border-primary pb-2 text-primary"><i class="fas fa-info-circle me-2"></i>Basic Information</h6>
+            
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label for="recipename" class="form-label fw-bold">Recipe Name:</label>
+                <input type="text" id="recipename" name="recipename" value="{{ $recipe->recipename }}" class="form-control" required>
+              </div>
+              
+              <div class="col-md-6">
+                <label for="category" class="form-label fw-bold">Category:</label>
+                <input type="text" id="category" name="category" value="{{ $recipe->category }}" class="form-control" required>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="descripcion" class="form-label fw-bold">Description:</label>
+              <textarea id="descripcion" name="descripcion" class="form-control" rows="2" required>{{ $recipe->descripcion }}</textarea>
+            </div>
           </div>
-
-          <div class="form-group">
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" name="descripcion" value="{{ $recipe->descripcion }}" class="form-control" required>
+          
+          <!-- Recipe Content Section -->
+          <div class="mb-4">
+            <h6 class="border-bottom border-primary pb-2 text-primary"><i class="fas fa-utensils me-2"></i>Recipe Content</h6>
+            
+            <div class="mb-3">
+              <label for="ingredients" class="form-label fw-bold">Ingredients:</label>
+              <textarea id="ingredients" name="ingredients" class="form-control" rows="3" required>{{ $recipe->ingredients }}</textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="instructions" class="form-label fw-bold">Instructions:</label>
+              <textarea id="instructions" name="instructions" class="form-control" rows="3" required>{{ $recipe->instructions }}</textarea>
+            </div>
           </div>
-
-          <div class="form-group">
-            <label for="ingredients">Ingredientes:</label>
-            <input type="text" id="ingredients" name="ingredients" value="{{ $recipe->ingredients }}" class="form-control" required>
+          
+          <!-- Nutritional Info Section -->
+          <div class="mb-4">
+            <h6 class="border-bottom border-primary pb-2 text-primary"><i class="fas fa-heartbeat me-2"></i>Nutritional Information</h6>
+            
+            <div class="row g-3">
+              <div class="col-md-3 col-6">
+                <label for="calories" class="form-label fw-bold">Calories:</label>
+                <div class="input-group">
+                  <input type="number" id="calories" name="calories" value="{{ $recipe->calories }}" class="form-control" required>
+                  <span class="input-group-text">kcal</span>
+                </div>
+              </div>
+              
+              <div class="col-md-3 col-6">
+                <label for="protein" class="form-label fw-bold">Protein:</label>
+                <div class="input-group">
+                  <input type="number" id="protein" name="protein" value="{{ $recipe->protein }}" class="form-control" required>
+                  <span class="input-group-text">g</span>
+                </div>
+              </div>
+              
+              <div class="col-md-3 col-6">
+                <label for="carbs" class="form-label fw-bold">Carbs:</label>
+                <div class="input-group">
+                  <input type="number" id="carbs" name="carbs" value="{{ $recipe->carbs }}" class="form-control" required>
+                  <span class="input-group-text">g</span>
+                </div>
+              </div>
+              
+              <div class="col-md-3 col-6">
+                <label for="fats" class="form-label fw-bold">Fats:</label>
+                <div class="input-group">
+                  <input type="number" id="fats" name="fats" value="{{ $recipe->fats }}" class="form-control" required>
+                  <span class="input-group-text">g</span>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div class="form-group">
-            <label for="instructions">Instructions:</label>
-            <input type="text" id="instructions" name="instructions" value="{{ $recipe->instructions }}" class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label for="calories">Calories:</label>
-            <input type="number" id="calories" name="calories" value="{{ $recipe->calories }}" class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label for="protein">Protein:</label>
-            <input type="number" id="protein" name="protein" value="{{ $recipe->protein }}" class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label for="carbs">Carbs:</label>
-            <input type="number" id="carbs" name="carbs" value="{{ $recipe->carbs }}" class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label for="fats">Fats:</label>
-            <input type="number" id="fats" name="fats" value="{{ $recipe->fats }}" class="form-control" required>
-          </div>
-
-          <div class="form-group">
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category" value="{{ $recipe->category }}" class="form-control" required>
-          </div>
-
-          <button type="submit" class="btn btn-primary mt-3">Actualizar</button>
         </form>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Close
+        </button>
+        <button type="submit" form="updateForm{{ $recipe->id }}" class="btn btn-primary">
+          <i class="fas fa-save me-1"></i>Update Recipe
+        </button>
       </div>
     </div>
   </div>
