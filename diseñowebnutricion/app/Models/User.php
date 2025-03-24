@@ -77,13 +77,19 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'allergies' => 'array',
-        'goals' => 'array',
-        'restrictions' => 'array',
+        'allergies' => 'string',
+        'goals' => 'string',
+        'restrictions' => 'string',
         'weight' => 'float',
         'height' => 'float',
         'age' => 'integer',
         'password' => 'hashed',
+    ];
+
+    protected $attributes = [
+        'allergies' => '',
+        'goals' => '',
+        'restrictions' => ''
     ];
 
     /**

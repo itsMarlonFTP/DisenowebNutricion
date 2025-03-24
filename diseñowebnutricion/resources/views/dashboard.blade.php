@@ -44,7 +44,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="card-title mb-0">Recetas Activas</h6>
-                            <h2 class="mt-2 mb-0">{{ \App\Models\Recipes::count() }}</h2>
+                            <h2 class="mt-2 mb-0">{{ \App\Models\Recipe::count() }}</h2>
                         </div>
                         <div class="fs-1">
                             <i class="fas fa-utensils"></i>
@@ -149,7 +149,7 @@
                     <i class="fas fa-utensils fa-3x text-success mb-3"></i>
                     <h5>Gestionar Recetas</h5>
                     <p class="text-muted">Administra el catálogo de recetas</p>
-                    <a href="{{ route('recipes.index') }}" class="btn btn-success">Ir a Recetas</a>
+                    <a href="{{ route('recipes.leer') }}" class="btn btn-success">Ir a Recetas</a>
                 </div>
             </div>
         </div>

@@ -12,22 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('recipes', function (Blueprint $table) {
-            $table->id('recipeID');
-            $table->string('title');
-            $table->text('description');
-            $table->json('ingredients');
-            $table->json('instructions');
-            $table->integer('preparation_time');
-            $table->integer('cooking_time');
-            $table->integer('servings');
-            $table->integer('calories');
-            $table->float('protein');
-            $table->float('carbohydrates');
-            $table->float('fats');
+            $table->id();
+            $table->string('recipename');
+            $table->text('descripcion');
+            $table->text('ingredients');
+            $table->text('instructions');
+            $table->decimal('calories', 8, 2);
+            $table->decimal('protein', 8, 2);
+            $table->decimal('carbs', 8, 2);
+            $table->decimal('fats', 8, 2);
             $table->string('category');
-            $table->enum('difficulty_level', ['fácil', 'medio', 'difícil']);
-            $table->string('image_url')->nullable();
-            $table->foreignId('created_by')->constrained('users', 'userID');
+            $table->foreignId('userID')->references('userID')->on('users');
             $table->timestamps();
         });
     }

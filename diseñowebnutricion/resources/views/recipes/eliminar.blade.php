@@ -4,7 +4,7 @@
 
   <div class="card-body">
     <h5 class="card-title">Delete a Recipe</h5>
-    <form method="POST" action="{{route('recipes.destroy')}}">
+    <form method="POST" action="{{route('recipes.eliminar')}}">
         @csrf 
         <div class="form-group">
             <label for="IdRecipe">Recipe ID:</label>

@@ -52,6 +52,14 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'allergies' => ['nullable', 'string', 'max:1000'],
+            'goals' => ['nullable', 'string', 'max:1000'],
+            'restrictions' => ['nullable', 'string', 'max:1000'],
+            'age' => ['nullable', 'integer', 'min:0', 'max:120'],
+            'gender' => ['nullable', 'string', 'in:M,F,O'],
+            'weight' => ['nullable', 'numeric', 'min:0', 'max:500'],
+            'height' => ['nullable', 'numeric', 'min:0', 'max:300'],
+            'activity_level' => ['nullable', 'string', 'in:sedentario,ligero,moderado,activo,muy_activo']
         ]);
     }
 
@@ -63,10 +71,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $userData = [
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-        ]);
+            'allergies' => $data['allergies'] ?? '',
+            'goals' => $data['goals'] ?? '',
+            'restrictions' => $data['restrictions'] ?? '',
+            'age' => $data['age'] ?? null,
+            'gender' => $data['gender'] ?? null,
+            'weight' => $data['weight'] ?? null,
+            'height' => $data['height'] ?? null,
+            'activity_level' => $data['activity_level'] ?? null
+        ];
+
+        return User::create($userData);
     }
 }

@@ -16,15 +16,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable(); 
-            $table->json('allergies')->nullable();
-            $table->json('goals')->nullable();;
-            $table->string('password')->nullable();;
-            $table->integer('age')->nullable();;
-            $table->string('gender')->nullable();;
-            $table->float('weight')->nullable();;
-            $table->float('height')->nullable();;
-            $table->string('activity_level')->nullable();;
-            $table->json('restrictions')->nullable();;
+            $table->text('allergies')->nullable();
+            $table->text('goals')->nullable();
+            $table->string('password')->nullable();
+            $table->integer('age')->nullable();
+            $table->string('gender')->nullable();
+            $table->float('weight')->nullable();
+            $table->float('height')->nullable();
+            $table->string('activity_level')->nullable();
+            $table->text('restrictions')->nullable();
             $table->timestamps();
             $table->rememberToken();
 

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Recipes extends Model
+class Recipe extends Model
 {
     use HasFactory;
     
@@ -15,32 +15,22 @@ class Recipes extends Model
 
     protected $fillable = [
         'recipename',
-        'description',
+        'descripcion',
         'ingredients',
         'instructions',
-        'preparation_time',
-        'cooking_time',
-        'servings',
         'calories',
         'protein',
         'carbs',
         'fats',
         'category',
-        'difficulty_level',
-        'image_url',
-        'created_by'
+        'userID'
     ];
 
     protected $casts = [
-        'ingredients' => 'array',
-        'instructions' => 'array',
-        'calories' => 'integer',
-        'protein' => 'float',
-        'carbs' => 'float',
-        'fats' => 'float',
-        'preparation_time' => 'integer',
-        'cooking_time' => 'integer',
-        'servings' => 'integer'
+        'calories' => 'decimal:2',
+        'protein' => 'decimal:2',
+        'carbs' => 'decimal:2',
+        'fats' => 'decimal:2'
     ];
 
     /**
@@ -48,7 +38,6 @@ class Recipes extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'created_by', 'id');
+        return $this->belongsTo(User::class, 'userID', 'userID');
     }
-}
-
+} 

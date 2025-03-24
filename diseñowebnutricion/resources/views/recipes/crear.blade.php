@@ -4,7 +4,7 @@
 
   <div class="card-body">
     <h5 class="card-title">Add a Recipe</h5>
-    <form method="POST" action="{{route('recipes.store')}}">
+    <form method="POST" action="{{route('recipes.guardarNueva')}}">
         @csrf 
         <div class="form-group">
             <label for="recipename">Recipe Name:</label>

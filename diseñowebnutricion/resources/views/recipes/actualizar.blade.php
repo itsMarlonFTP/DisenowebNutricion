@@ -7,7 +7,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="{{ route('recipes.update', $recipe) }}">
+        <form method="POST" action="{{ route('recipes.guardar', $recipe) }}">
           @csrf 
           @method('PUT')
 

@@ -24,7 +24,15 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
-    Route::resource('recipes', RecipeController::class);
+    
+    // Rutas de recetas
+    Route::get('/recipes', [RecipeController::class, 'leer'])->name('recipes.leer');
+    Route::get('/recipes/crear', [RecipeController::class, 'crear'])->name('recipes.crear');
+    Route::post('/recipes', [RecipeController::class, 'guardarNueva'])->name('recipes.guardarNueva');
+    Route::get('/recipes/{recipe}', [RecipeController::class, 'ver'])->name('recipes.ver');
+    Route::get('/recipes/{recipe}/actualizar', [RecipeController::class, 'actualizar'])->name('recipes.actualizar');
+    Route::put('/recipes/{recipe}', [RecipeController::class, 'guardar'])->name('recipes.guardar');
+    Route::post('/recipes/eliminar', [RecipeController::class, 'eliminar'])->name('recipes.eliminar');
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -2,110 +2,107 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Recipes;
+use App\Models\Recipe;
 use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra la lista de recetas
      */
-    public function index()
+    public function leer()
     {
-        $recipes = Recipes::latest()->paginate(10);
-        return view('recipes.index', compact('recipes'));
+        $recipes = Recipe::latest()->paginate(10);
+        return view('recipes.leer', compact('recipes'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear una nueva receta
      */
-    public function create()
+    public function crear()
     {
-        return view('recipes.create');
+        return view('recipes.crear');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Guarda una nueva receta
      */
-    public function store(Request $request)
+    public function guardarNueva(Request $request)
     {
         $validated = $request->validate([
             'recipename' => 'required|string|max:255',
-            'description' => 'required|string',
-            'ingredients' => 'required|array',
-            'instructions' => 'required|array',
-            'preparation_time' => 'required|integer',
-            'cooking_time' => 'required|integer',
-            'servings' => 'required|integer',
-            'calories' => 'required|integer',
+            'descripcion' => 'required|string',
+            'ingredients' => 'required|string',
+            'instructions' => 'required|string',
+            'calories' => 'required|numeric',
             'protein' => 'required|numeric',
             'carbs' => 'required|numeric',
             'fats' => 'required|numeric',
-            'category' => 'required|string',
-            'difficulty_level' => 'required|in:fácil,medio,difícil',
-            'image_url' => 'nullable|url'
+            'category' => 'required|string'
         ]);
 
-        $validated['created_by'] = auth()->id();
+        $validated['userID'] = auth()->id();
         
-        Recipes::create($validated);
+        Recipe::create($validated);
 
-        return redirect()->route('recipes.index')
-            ->with('success', 'Receta creada exitosamente.');
+        return redirect()->route('recipes.leer')
+            ->with('success', '¡Receta creada exitosamente!');
     }
 
     /**
-     * Display the specified resource.
+     * Muestra los detalles de una receta
      */
-    public function show(Recipes $recipe)
+    public function ver(Recipe $recipe)
     {
-        return view('recipes.show', compact('recipe'));
+        return view('recipes.ver', compact('recipe'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario para editar una receta
      */
-    public function edit(Recipes $recipe)
+    public function actualizar(Recipe $recipe)
     {
-        return view('recipes.edit', compact('recipe'));
+        return view('recipes.actualizar', compact('recipe'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualiza una receta existente
      */
-    public function update(Request $request, Recipes $recipe)
+    public function guardar(Request $request, Recipe $recipe)
     {
         $validated = $request->validate([
             'recipename' => 'required|string|max:255',
-            'description' => 'required|string',
-            'ingredients' => 'required|array',
-            'instructions' => 'required|array',
-            'preparation_time' => 'required|integer',
-            'cooking_time' => 'required|integer',
-            'servings' => 'required|integer',
-            'calories' => 'required|integer',
+            'descripcion' => 'required|string',
+            'ingredients' => 'required|string',
+            'instructions' => 'required|string',
+            'calories' => 'required|numeric',
             'protein' => 'required|numeric',
             'carbs' => 'required|numeric',
             'fats' => 'required|numeric',
-            'category' => 'required|string',
-            'difficulty_level' => 'required|in:fácil,medio,difícil',
-            'image_url' => 'nullable|url'
+            'category' => 'required|string'
         ]);
 
         $recipe->update($validated);
 
-        return redirect()->route('recipes.index')
-            ->with('success', 'Receta actualizada exitosamente.');
+        return redirect()->route('recipes.leer')
+            ->with('success', '¡Receta actualizada exitosamente!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Elimina una receta
      */
-    public function destroy(Recipes $recipe)
+    public function eliminar(Request $request)
     {
+        $recipe = Recipe::findOrFail($request->IdRecipe);
+        
+        if ($recipe->userID !== auth()->id()) {
+            return redirect()->route('recipes.leer')
+                ->with('error', 'No tiene permiso para eliminar esta receta.');
+        }
+
         $recipe->delete();
 
-        return redirect()->route('recipes.index')
-            ->with('success', 'Receta eliminada exitosamente.');
+        return redirect()->route('recipes.leer')
+            ->with('success', '¡Receta eliminada exitosamente!');
     }
 }
