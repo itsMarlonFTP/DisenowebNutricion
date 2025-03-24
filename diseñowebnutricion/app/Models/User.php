@@ -123,4 +123,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(FitnessIntegration::class, 'userID', 'userID');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function recipes()
+    {
+        return $this->hasMany(Recipe::class, 'userID', 'userID');
+    }
 }

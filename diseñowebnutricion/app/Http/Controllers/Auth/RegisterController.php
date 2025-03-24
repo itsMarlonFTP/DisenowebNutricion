@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\WelcomeEmail;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -85,6 +86,11 @@ class RegisterController extends Controller
             'activity_level' => $data['activity_level'] ?? null
         ];
 
-        return User::create($userData);
+        $user = User::create($userData);
+        
+        // Enviar correo de bienvenida
+        $user->notify(new WelcomeEmail());
+
+        return $user;
     }
 }

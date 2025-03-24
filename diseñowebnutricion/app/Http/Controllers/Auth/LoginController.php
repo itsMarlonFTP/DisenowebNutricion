@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\LoginAlert;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -41,6 +42,9 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        // Enviar notificación de inicio de sesión
+        $user->notify(new LoginAlert());
+        
         return redirect()->intended($this->redirectTo);
     }
 }

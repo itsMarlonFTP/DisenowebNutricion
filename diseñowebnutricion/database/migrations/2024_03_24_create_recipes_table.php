@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('carbs', 8, 2);
             $table->decimal('fats', 8, 2);
             $table->string('category');
-            $table->foreignId('userID')->references('userID')->on('users');
+            $table->foreignId('userID')->references('userID')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
