@@ -58,11 +58,11 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="card-title mb-0">Planes Activos</h6>
-                            <h2 class="mt-2 mb-0">12</h2>
+                            <h6 class="card-title mb-0">Tickets Pendientes</h6>
+                            <h2 class="mt-2 mb-0">{{ \App\Models\Ticket::where('status', 'pending')->count() }}</h2>
                         </div>
                         <div class="fs-1">
-                            <i class="fas fa-clipboard-list"></i>
+                            <i class="fas fa-ticket-alt"></i>
                         </div>
                     </div>
                 </div>
@@ -70,36 +70,27 @@
         </div>
     </div>
 
-    <!-- Actividad Reciente -->
+    <!-- Actividad Reciente y Gráfica -->
     <div class="row mb-4">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Actividad Reciente</h5>
+                    <h5 class="card-title mb-0">Tickets Recientes</h5>
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Nuevo usuario registrado</h6>
-                                <small>Hace 3 minutos</small>
+                        @foreach(\App\Models\Ticket::with('user')->latest()->take(5)->get() as $ticket)
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ $ticket->title }}</h6>
+                                    <small>{{ $ticket->created_at->diffForHumans() }}</small>
+                                </div>
+                                <p class="mb-1">{{ $ticket->user->name }} - {{ $ticket->description }}</p>
+                                <span class="badge bg-{{ $ticket->status === 'completed' ? 'success' : ($ticket->status === 'in_progress' ? 'warning' : 'secondary') }}">
+                                    {{ ucfirst($ticket->status) }}
+                                </span>
                             </div>
-                            <p class="mb-1">Juan Pérez se ha unido a la plataforma</p>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Nueva receta agregada</h6>
-                                <small>Hace 1 hora</small>
-                            </div>
-                            <p class="mb-1">Ensalada Mediterránea</p>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Plan de nutrición actualizado</h6>
-                                <small>Hace 2 horas</small>
-                            </div>
-                            <p class="mb-1">Plan Premium - María González</p>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -107,25 +98,10 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Próximos Eventos</h5>
+                    <h5 class="card-title mb-0">Estado de Recetas</h5>
                 </div>
                 <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Taller de Nutrición</h6>
-                                <small>Mañana, 10:00 AM</small>
-                            </div>
-                            <p class="mb-1">Sesión informativa sobre hábitos saludables</p>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1">Actualización del Sistema</h6>
-                                <small>Próxima semana</small>
-                            </div>
-                            <p class="mb-1">Nuevas características y mejoras</p>
-                        </div>
-                    </div>
+                    <canvas id="recipesChart" height="200"></canvas>
                 </div>
             </div>
         </div>
@@ -156,13 +132,49 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body text-center">
-                    <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
-                    <h5>Ver Estadísticas</h5>
-                    <p class="text-muted">Analiza el rendimiento de la plataforma</p>
-                    <a href="#" class="btn btn-info text-white">Ver Estadísticas</a>
+                    <i class="fas fa-ticket-alt fa-3x text-info mb-3"></i>
+                    <h5>Gestionar Tickets</h5>
+                    <p class="text-muted">Administra las solicitudes de recetas</p>
+                    <a href="{{ route('tickets.index') }}" class="btn btn-info text-white">Ir a Tickets</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('recipesChart').getContext('2d');
+    const recipesData = {
+        labels: ['Pendientes', 'En Progreso', 'Completadas'],
+        datasets: [{
+            data: [
+                {{ \App\Models\Ticket::where('status', 'pending')->count() }},
+                {{ \App\Models\Ticket::where('status', 'in_progress')->count() }},
+                {{ \App\Models\Ticket::where('status', 'completed')->count() }}
+            ],
+            backgroundColor: [
+                '#6c757d',
+                '#ffc107',
+                '#198754'
+            ]
+        }]
+    };
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: recipesData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+</script>
+@endpush
 @endsection 

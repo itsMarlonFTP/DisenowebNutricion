@@ -13,6 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'No tienes permisos para gestionar usuarios.');
+        }
         $users = User::all();
         return view('users.leer', compact('users'));
     }
@@ -75,6 +78,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'No tienes permisos para editar usuarios.');
+        }
         return view('users.actualizar', compact('user'));
     }
 
@@ -83,6 +89,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'No tienes permisos para actualizar usuarios.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->userID . ',userID',
@@ -114,6 +124,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if (auth()->user()->role !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'No tienes permisos para eliminar usuarios.');
+        }
+
+        if ($user->userID === auth()->id()) {
+            return redirect()->route('users.index')->with('error', 'No puedes eliminar tu propio usuario.');
+        }
+
         $user->delete();
         return redirect()->route('users.index')
             ->with('success', 'Usuario eliminado exitosamente.');

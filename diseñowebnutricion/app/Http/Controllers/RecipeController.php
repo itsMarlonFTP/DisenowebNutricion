@@ -4,9 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {
+    /**
+     * Verifica si el usuario actual es administrador
+     */
+    private function isAdmin()
+    {
+        return Auth::check() && Auth::user()->role === 'admin';
+    }
+
     /**
      * Muestra la lista de recetas
      */
@@ -21,6 +30,9 @@ class RecipeController extends Controller
      */
     public function crear()
     {
+        if (!$this->isAdmin()) {
+            return redirect()->back()->with('error', 'No tienes permisos de administrador.');
+        }
         return view('recipes.crear');
     }
 
@@ -29,6 +41,10 @@ class RecipeController extends Controller
      */
     public function guardarNueva(Request $request)
     {
+        if (!$this->isAdmin()) {
+            return redirect()->back()->with('error', 'No tienes permisos de administrador.');
+        }
+
         $validated = $request->validate([
             'recipename' => 'required|string|max:255',
             'descripcion' => 'required|string',
@@ -62,6 +78,9 @@ class RecipeController extends Controller
      */
     public function actualizar(Recipe $recipe)
     {
+        if (!$this->isAdmin()) {
+            return redirect()->back()->with('error', 'No tienes permisos de administrador.');
+        }
         return view('recipes.actualizar', compact('recipe'));
     }
 
@@ -70,6 +89,10 @@ class RecipeController extends Controller
      */
     public function guardar(Request $request, Recipe $recipe)
     {
+        if (!$this->isAdmin()) {
+            return redirect()->back()->with('error', 'No tienes permisos de administrador.');
+        }
+
         $validated = $request->validate([
             'recipename' => 'required|string|max:255',
             'descripcion' => 'required|string',
@@ -91,13 +114,10 @@ class RecipeController extends Controller
     /**
      * Elimina una receta
      */
-    public function eliminar(Request $request)
+    public function eliminar(Recipe $recipe)
     {
-        $recipe = Recipe::findOrFail($request->IdRecipe);
-        
-        if ($recipe->userID !== auth()->id()) {
-            return redirect()->route('recipes.leer')
-                ->with('error', 'No tiene permiso para eliminar esta receta.');
+        if (!$this->isAdmin()) {
+            return redirect()->back()->with('error', 'No tienes permisos de administrador.');
         }
 
         $recipe->delete();

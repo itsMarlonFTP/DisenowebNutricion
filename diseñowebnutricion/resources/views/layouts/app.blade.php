@@ -60,15 +60,43 @@
                                 <i class="fas fa-tachometer-alt me-1"></i>Dashboard
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
-                                <i class="fas fa-users me-1"></i>Usuarios
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('recipes.*') ? 'active' : '' }}" href="{{ route('recipes.leer') }}">
+                        @if(auth()->user()->role === 'admin')
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+                                    <i class="fas fa-users me-1"></i>Usuarios
+                                </a>
+                            </li>
+                        @endif
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ request()->routeIs('recipes.*') ? 'active' : '' }}" href="#" id="recipesDropdown" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-utensils me-1"></i>Recetas
                             </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('recipes.leer') }}">
+                                        <i class="fas fa-list me-2"></i>Ver Recetas
+                                    </a>
+                                </li>
+                                @if(auth()->user()->role === 'admin')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('recipes.crear') }}">
+                                            <i class="fas fa-plus me-2"></i>Crear Receta
+                                        </a>
+                                    </li>
+                                @endif
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('tickets.create') }}">
+                                        <i class="fas fa-ticket-alt me-2"></i>Solicitar Receta
+                                    </a>
+                                </li>
+                                @if(auth()->user()->role === 'admin')
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('tickets.index') }}">
+                                            <i class="fas fa-tasks me-2"></i>Gestionar Solicitudes
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
                         </li>
                     @else
                         <li class="nav-item">
@@ -80,6 +108,12 @@
                 </ul>
                 <ul class="navbar-nav">
                     @auth
+                        <li class="nav-item">
+                            <a class="nav-link {{ auth()->user()->role === 'admin' ? 'text-warning' : '' }}" href="{{ route('toggle.admin') }}">
+                                <i class="fas fa-user-shield me-1"></i>
+                                {{ auth()->user()->role === 'admin' ? 'Modo Admin' : 'Modo Usuario' }}
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-user-circle me-1"></i>{{ Auth::user()->name }}
