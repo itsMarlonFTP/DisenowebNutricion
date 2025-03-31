@@ -57,7 +57,8 @@ class User extends Authenticatable
         'weight',
         'height',
         'activity_level',
-        'restrictions'
+        'restrictions',
+        'role'
     ];
 
     /**
@@ -84,12 +85,14 @@ class User extends Authenticatable
         'height' => 'float',
         'age' => 'integer',
         'password' => 'hashed',
+        'role' => 'string'
     ];
 
     protected $attributes = [
         'allergies' => '',
         'goals' => '',
-        'restrictions' => ''
+        'restrictions' => '',
+        'role' => 'user'
     ];
 
     /**
