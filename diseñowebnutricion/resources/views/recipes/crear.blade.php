@@ -8,7 +8,7 @@
                     <h5 class="card-title mb-0">Crear Nueva Receta</h5>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('recipes.guardarNueva') }}" class="needs-validation" novalidate>
+                    <form method="POST" action="{{ route('recipes.guardarNueva') }}" enctype="multipart/form-data" class="needs-validation" novalidate>
                         @csrf 
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -90,6 +90,15 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Imagen de la Receta</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+                            <div class="form-text">Formatos aceptados: JPG, PNG, GIF. Tamaño máximo: 2MB</div>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

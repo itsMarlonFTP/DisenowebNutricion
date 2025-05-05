@@ -23,7 +23,8 @@ class Recipe extends Model
         'carbs',
         'fats',
         'category',
-        'userID'
+        'userID',
+        'image_url'
     ];
 
     protected $casts = [

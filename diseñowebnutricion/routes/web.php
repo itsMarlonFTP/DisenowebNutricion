@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Rutas de recetas
     Route::get('/recipes', [RecipeController::class, 'leer'])->name('recipes.leer');
+    Route::get('/recipes/crear', [RecipeController::class, 'crear'])->name('recipes.crear');
+    Route::get('/recipes/{recipe}', [RecipeController::class, 'ver'])->name('recipes.ver');
 
     // Rutas de recetas (solo admin)
     Route::middleware(['auth'])->group(function () {
@@ -45,9 +47,6 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/recipes/{recipe}', [RecipeController::class, 'guardar'])->name('recipes.guardar');
         Route::delete('/recipes/{recipe}', [RecipeController::class, 'eliminar'])->name('recipes.eliminar');
     });
-
-    // Ruta para ver detalles de una receta (debe ir después de las rutas específicas)
-    Route::get('/recipes/{recipe}', [RecipeController::class, 'ver'])->name('recipes.ver');
 
     // Rutas de órdenes
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
